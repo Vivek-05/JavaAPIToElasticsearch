@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="OFF">
+	<appenders>
+	   
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="[%d{ABSOLUTE}][%-5p][%-25c][%t] %m%n" />
+		</Console>
+
+		<BatchDelivery batchSize="10000" deliveryInterval="1000">
+
+			<NoSql name="elasticsearchAppender">
+			<JsonLayout compact="true" eventEol="true" />
+			
+				<Elasticsearch cluster="elasticsearch" host="10.162.205.175" port="9200" index="data_upload_assignment" type="assignment" flushInterval="5s" />
+				
+			</NoSql>
+		</BatchDelivery>
+	</appenders>
+	<loggers>
+		<logger name="Test">
+			<appender-ref ref="elasticsearchAppender" />
+		</logger>
+
+		<root level="debug">
+			<appender-ref ref="Console" />
+			<appender-ref ref="elasticsearchAppender" />
+		</root>
+		
+	</loggers>
+</configuration>
